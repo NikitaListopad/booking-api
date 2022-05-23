@@ -1,14 +1,15 @@
-import express from 'express';
-
-const PORT = process.env.PORT ?? 5000;
+const express = require('express');
+const { port } = require('./config')
 
 const app = express();
+
+console.log(port)
 
 app.get('/', (req, res) => {
   res.status(200).send('Here we go')
 })
 
 
-app.listen(PORT, () => {
-  console.log(`We are started port: ${PORT}`)
+app.listen(port, () => {
+  console.log(`We are started port: ${port}`)
 });
