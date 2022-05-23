@@ -3,6 +3,8 @@ const { port } = require('./config')
 
 const app = express();
 
+app.use('/api/users', require('./routes/users'));
+
 console.log(port)
 
 app.get('/', (req, res) => {
