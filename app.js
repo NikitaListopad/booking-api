@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser());
 
-app.use('/api/users', require('./routes/users'));
+app.use('/api/users', require('./routes/userRoute'));
 
 app.get('/', (req, res) => {
   res.send('Here we go')
