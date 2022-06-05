@@ -10,6 +10,8 @@ app.use(cors());
 
 app.use('/api/users', require('./routes/userRoute'));
 
+app.use('/api/todos', require('./routes/todoRoute'));
+
 app.get('/', (req, res) => {
   res.send('Here we go')
 })
