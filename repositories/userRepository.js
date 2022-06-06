@@ -18,7 +18,7 @@ const createUser = async (data) => {
 
 const findExistedUser = async (username, email) => {
     return await UserModel.query((qb) => {
-        qb.where(email).orWhere(username);
+        qb.where('username', username).orWhere('email', email);
     }).fetchAll();
 }
 
