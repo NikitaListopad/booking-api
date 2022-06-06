@@ -62,9 +62,33 @@ const logout = async refreshToken => {
     return await tokenRepo.removeToken(refreshToken)
 }
 
+const refresh = async token => {
+    if (!token) {
+        throw ApiError.UnauthorizedError()
+    }
+    const userData = tokenService.validateAccessToken(token);
+    const existedToken = await tokenRepo.findToken(token);
+
+    if (!userData || !existedToken) {
+        throw ApiError.UnauthorizedError();
+    }
+
+    const user = await userRepo.getUser(userData.id);
+
+    const userDto = new UserDto(user);
+
+    const {accessToken, refreshToken} = tokenService.generateToken({...userDto});
+
+    await tokenRepo.saveToken(userDto.id, refreshToken);
+
+    return {
+        accessToken, refreshToken, ...userDto
+    };
+}
 
 module.exports = {
     registration,
     login,
-    logout
+    logout,
+    refresh
 }

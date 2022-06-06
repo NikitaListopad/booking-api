@@ -17,6 +17,24 @@ const generateToken = data => {
     }
 }
 
+const validateAccessToken = token => {
+    try {
+        return  jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    } catch (e) {
+        return null;
+    }
+}
+
+const validateRefreshToken = token => {
+    try {
+        return  jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    } catch (e) {
+        return null;
+    }
+}
+
 module.exports = {
     generateToken,
+    validateAccessToken,
+    validateRefreshToken
 }
