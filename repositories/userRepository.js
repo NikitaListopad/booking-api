@@ -16,8 +16,15 @@ const createUser = async (data) => {
     })
 }
 
+const findExistedUser = async (username, email) => {
+    return await UserModel.query((qb) => {
+        qb.where(email).orWhere(username);
+    }).fetchAll();
+}
+
 module.exports = {
     getUsers,
     createUser,
-    getUser
+    getUser,
+    findExistedUser
 }
