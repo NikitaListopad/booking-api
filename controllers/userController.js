@@ -1,25 +1,37 @@
 const userService = require('../services/userService');
 
-const fetchAllUsers = async (req, res) => {
-    const usersCollection = await userService.getAllUsersService();
+const fetchAllUsers = async (req, res, next) => {
+    try {
+        const usersCollection = await userService.getAllUsers();
 
-    res.status(200).send(usersCollection);
+        res.status(200).json(usersCollection);
+    } catch (e) {
+        next(e);
+    }
 }
 
-const fetchTargetUser = async (req, res) => {
-    const { id } = req.params;
+const fetchTargetUser = async (req, res, next) => {
+    try {
+        const { id } = req.params;
 
-    const user = await userService.getUserService(id);
+        const user = await userService.getUser(id);
 
-    res.status(200).send(user);
+        res.status(200).send(user);
+    } catch (e) {
+        next(e);
+    }
 }
 
-const createNewUser = async (req, res) => {
-    const { name, surname, email } = req.body;
+const createNewUser = async (req, res, next) => {
+    try {
+        const { name, surname, email } = req.body;
 
-    const result = await userService.createUserService({ name, surname, email});
+        const result = await userService.createUser({ name, surname, email});
 
-    res.status(200).send(result);
+        res.status(200).send(result);
+    } catch (e) {
+        next(e);
+    }
 }
 
 module.exports = {

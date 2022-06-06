@@ -1,10 +1,10 @@
 const apiRouter = require('express').Router();
 const userController = require('../controllers/userController')
+const authMiddleware = require('../middlewares/auth-middleware');
 
-apiRouter.get('/:id', userController.fetchAllUsers);
+apiRouter.get('/target/:id', authMiddleware, userController.fetchTargetUser);
 
-apiRouter.get('/collection', userController.fetchTargetUser);
+apiRouter.get('/collection', authMiddleware, userController.fetchAllUsers);
 
-apiRouter.post('/create', userController.createNewUser);
 
 module.exports = apiRouter;

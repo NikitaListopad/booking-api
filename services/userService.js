@@ -1,25 +1,32 @@
 const userRepo = require('../repositories/userRepository');
+const ApiError = require('../exceptions/api-error');
 
-const getAllUsersService = async () => {
-    const usersCollection = await userRepo.getUsers();
-
-    return usersCollection.toJSON();
+const getAllUsers = async () => {
+    return await userRepo.getUsers();
 }
 
-const getUserService = async id => {
+const getUser = async id => {
+    if (!id) {
+        throw ApiError.BadRequest(`Can not find user without ID param`);
+    }
+
     const fetchedUser = await userRepo.getUser(id);
+
+    if (!fetchedUser) {
+        throw ApiError.BadRequest('User with current ID is not existed');
+    }
 
     return fetchedUser.toJSON();
 }
 
-const createUserService = async data => {
+const createUser = async data => {
     const newUser = await userRepo.createUser(data);
 
     return newUser.toJSON();
 }
 
 module.exports = {
-    getAllUsersService,
-    createUserService,
-    getUserService
+    getAllUsers,
+    createUser,
+    getUser
 }

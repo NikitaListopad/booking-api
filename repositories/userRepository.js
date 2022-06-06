@@ -2,11 +2,15 @@ const { v4: uuid } = require('uuid')
 const { User: UserModel } = require('../models/userModel')
 
 const getUsers = async () => {
-    return await UserModel.fetchAll();
+    const users = await UserModel.fetchAll();
+
+    return users.toJSON();
 }
 
 const getUser = async (id) => {
-    return await UserModel.where({id}).fetch();
+    const user = await UserModel.where({id}).fetch();
+
+    return user && user.toJSON();
 }
 
 const createUser = async (data) => {
@@ -15,7 +19,7 @@ const createUser = async (data) => {
         ...data
     })
 
-    return user.toJSON();
+    return user && user.toJSON();
 }
 
 const findExistedUser = async ({username = null, email}) => {
