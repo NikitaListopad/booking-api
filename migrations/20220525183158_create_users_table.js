@@ -3,9 +3,9 @@ exports.up = function(knex) {
       if (!exist) {
           return knex.schema.createTable('users', (t) => {
               t.uuid('id').primary().notNullable();
-              t.text('name').notNullable();
-              t.text('surname').notNullable();
-              t.text('email').notNullable();
+              t.text('username').notNullable().unique();
+              t.string('password').notNullable();
+              t.text('email').unique().notNullable();
               t.timestamps(true, true)
           })
       }

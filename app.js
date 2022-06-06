@@ -3,10 +3,11 @@ const { port } = require('./config')
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+const cookieParser = require('cookie-parser');
 
 app.use(bodyParser());
 app.use(cors());
+app.use(cookieParser());
 
 app.use('/api/users', require('./routes/userRoute'));
 
