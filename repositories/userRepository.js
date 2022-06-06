@@ -10,17 +10,29 @@ const getUser = async (id) => {
 }
 
 const createUser = async (data) => {
-    return await UserModel.forge().save({
+    const user = await UserModel.forge().save({
         id: uuid(),
         ...data
     })
+
+    return user.toJSON();
 }
 
-const findExistedUser = async (username, email) => {
-    return await UserModel.query((qb) => {
-        qb.where('username', username).orWhere('email', email);
+const findExistedUser = async ({username = null, email}) => {
+    const user = await UserModel.query((qb) => {
+
+        if(email) {
+            qb.where('email', email)
+        }
+
+        if(username) {
+            qb.orWhere('username', username);
+        }
     }).fetchAll();
+
+    return user.toJSON();
 }
+
 
 module.exports = {
     getUsers,

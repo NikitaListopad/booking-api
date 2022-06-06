@@ -17,7 +17,6 @@ const generateToken = data => {
     }
 }
 
-
 module.exports = {
     generateToken,
 }

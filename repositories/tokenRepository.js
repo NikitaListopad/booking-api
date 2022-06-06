@@ -8,9 +8,14 @@ const findToken = async (userId) => {
 }
 
 const updateToken = async (userId, token) => {
-    return await TokenModel.where({
+
+    const oldToken =  await TokenModel.where({
         user_id: userId
-    }).save({refresh_token: token})
+    }).fetch();
+
+    return await TokenModel.where({user_id: userId}).save({
+        ...oldToken.toJSON(), refresh_token: token
+    }, { method: 'UPDATE' })
 }
 
 const saveToken = async (userId, refreshToken) => {
@@ -28,8 +33,13 @@ const saveToken = async (userId, refreshToken) => {
     });
 }
 
+const removeToken = async (token) => {
+    return await TokenModel.where({refresh_token: token}).destroy();
+}
+
 module.exports = {
     saveToken,
     updateToken,
-    findToken
+    findToken,
+    removeToken
 }

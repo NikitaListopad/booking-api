@@ -3,32 +3,68 @@ const tokenRepo = require('../repositories/tokenRepository');
 const tokenService = require('../services/tokenService');
 const UserDto = require('../helpers/dtos/user-dto');
 const ApiError = require('../exceptions/api-error');
+const bcrypt = require('bcrypt');
 
 const registration = async (data) => {
 
-    const {username, email} = data;
+    const {username, email, password} = data;
 
-    const existedUser = await userRepo.findExistedUser(username,email).then(res => res.toJSON());
+    const [existedUser] = await userRepo.findExistedUser({username, email});
 
-    if (!!existedUser.length) {
-        const invalidParam = existedUser[0].username === username ? username : email;
+    if (!!existedUser) {
+        const invalidParam = existedUser.username === username ? username : email;
 
         throw ApiError.BadRequest(`User with ${invalidParam === username ? 'username' : 'email'} ${invalidParam} is already exist`)
     }
 
-    const newUser = await userRepo.createUser(data);
+    const hashPassword = await bcrypt.hash(password, 3)
 
-    const userData = new UserDto(newUser.toJSON());
+    const newUser = await userRepo.createUser({...data, password: hashPassword});
+
+    const userData = new UserDto(newUser);
 
     const {accessToken, refreshToken} = await tokenService.generateToken({...userData});
 
-    const token = await tokenRepo.saveToken(userData.id, refreshToken);
+    await tokenRepo.saveToken(userData.id, refreshToken);
 
     return {
         accessToken, refreshToken, ...userData
     };
 }
 
+const login = async ({email, password}) => {
+
+    const [user] = await userRepo.findExistedUser({email});
+
+    if (!user) {
+        throw ApiError.BadRequest(`User with email ${email} is not registrated`);
+    }
+
+    const isPassEquals = await bcrypt.compare(password, user.password)
+
+    if (!isPassEquals) {
+        throw ApiError.BadRequest('Wrong password');
+    }
+
+    const userDto = new UserDto(user);
+
+    const {accessToken, refreshToken} = tokenService.generateToken({...userDto});
+
+    await tokenRepo.saveToken(userDto.id, refreshToken);
+
+
+    return {
+        accessToken, refreshToken, ...userDto
+    };
+}
+
+const logout = async refreshToken => {
+    return await tokenRepo.removeToken(refreshToken)
+}
+
+
 module.exports = {
     registration,
+    login,
+    logout
 }
