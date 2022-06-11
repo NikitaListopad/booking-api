@@ -28,7 +28,7 @@ const registration = async (data) => {
     await tokenRepo.saveToken(userData.id, refreshToken);
 
     return {
-        accessToken, refreshToken, ...userData
+        accessToken, refreshToken, user: userData
     };
 }
 
@@ -54,7 +54,7 @@ const login = async ({email, password}) => {
 
 
     return {
-        accessToken, refreshToken, ...userDto
+        accessToken, refreshToken, user: userDto
     };
 }
 
