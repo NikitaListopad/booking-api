@@ -82,7 +82,7 @@ const refresh = async token => {
     await tokenRepo.saveToken(userDto.id, refreshToken);
 
     return {
-        accessToken, refreshToken, ...userDto
+        accessToken, refreshToken, user: userDto
     };
 }
 
