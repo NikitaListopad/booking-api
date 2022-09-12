@@ -1,12 +1,14 @@
 const todoService = require('../services/todoService');
+const mocks = require('../mock/hotelsMock');
 
-
-const fetchTodos = async (req, res) => {
+const fetchHotels = async (req, res) => {
     const { id } = req.params;
 
-    const todos = await todoService.fetchTodos(id);
+    console.log('Here ok')
 
-    res.status(200).send(todos)
+    const hotels = mocks.generateHotelsArray(15);
+
+    res.status(200).send(hotels)
 }
 
 const createTodo = async (req, res) => {
@@ -19,5 +21,5 @@ const createTodo = async (req, res) => {
 
 module.exports = {
     createTodo,
-    fetchTodos
+    fetchHotels
 }
