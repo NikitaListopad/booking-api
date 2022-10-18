@@ -11,7 +11,7 @@ exports.up = function(knex) {
               t.uuid(ID).primary().notNullable();
               t.string(USERNAME).notNullable().unique();
               t.string(PASSWORD).notNullable();
-              t.text(EMAIL).unique().notNullable();
+              t.string(EMAIL).unique().notNullable();
               t.timestamps(true, true)
           })
       }

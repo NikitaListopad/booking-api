@@ -1,10 +1,10 @@
 const { bookshelf } = require('../config')
 
-const Todo = bookshelf.model('Todo', {
-    tableName: 'todos',
+const Hotel = bookshelf.model('Hotel', {
+    tableName: 'hotels',
     idAttribute: 'id',
 })
 
 module.exports = {
-    Todo
+    Hotel
 }

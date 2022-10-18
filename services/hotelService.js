@@ -1,21 +1,11 @@
-const TodoRepo = require('../repositories/todoRepository');
+const HotelRepo = require('../repositories/hotelRepository');
 
-const fetchTodos = async id => {
-    const todos = await TodoRepo.getTodosCollection(id);
+const fetchHotels = async id => {
+    const hotels = await HotelRepo.getHotelsCollection(id);
 
-    console.log(todos)
-
-    return todos.toJSON();
-}
-
-const createTodo = async content => {
-    console.log(content)
-    const newTodo = await TodoRepo.addTodo(content);
-
-    return newTodo.toJSON();
+    return hotels.toJSON();
 }
 
 module.exports = {
-    fetchTodos,
-    createTodo
+    fetchHotels,
 }
