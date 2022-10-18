@@ -1,12 +1,19 @@
+const AUTH_TOKENS = 'auth_tokens';
+const ID = 'id';
+const REFRESH_TOKEN = 'refresh_token';
+const USER_ID = 'user_id';
+const USERS = 'users';
+const CASCADE = 'cascade';
+
 exports.up = function(knex) {
-    return knex.schema.hasTable('auth_tokens').then((exist) => {
+    return knex.schema.hasTable(AUTH_TOKENS).then((exist) => {
         if (!exist) {
-            return knex.schema.createTable('auth_tokens', (t) => {
-                t.uuid('id').primary().notNullable();
-                t.text('refresh_token').notNullable();
+            return knex.schema.createTable(AUTH_TOKENS, (t) => {
+                t.uuid(ID).primary().notNullable();
+                t.text(REFRESH_TOKEN).notNullable();
                 t.timestamps(true, true)
-                t.uuid('user_id');
-                t.foreign('user_id').references('id').inTable('users').onDelete('cascade');
+                t.uuid(USER_ID);
+                t.foreign(USER_ID).references(ID).inTable(USERS).onDelete(CASCADE);
             })
         }
     })
@@ -14,9 +21,9 @@ exports.up = function(knex) {
 
 
 exports.down = function(knex) {
-    return knex.schema.hasTable('auth_tokens').then((exist) => {
+    return knex.schema.hasTable(AUTH_TOKENS).then((exist) => {
         if (exist) {
-            return knex.schema.dropTable('auth_tokens');
+            return knex.schema.dropTable(AUTH_TOKENS);
         }
     })
 };
