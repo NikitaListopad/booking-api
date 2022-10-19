@@ -3,6 +3,7 @@ const hotelController = require('../controllers/hotelController');
 const authMiddleware = require('../middlewares/auth-middleware');
 
 
-apiRouter.get('/collection', hotelController.fetchHotels);
+apiRouter.get('/target/:id', hotelController.fetchHotel);
+apiRouter.get('/collection', hotelController.fetchHotelsCollection);
 
 module.exports = apiRouter;
